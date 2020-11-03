@@ -10,15 +10,23 @@ defmodule Tictactoe.Game do
             c7: nil,
             c8: nil,
             c9: nil,
-            state: :playing
+            state: :playing,
+            move: :p1
 
   def start_game() do
     %Game{}
   end
 
-  def make_move(%Game{} = game, cell, mark) do
-    Map.put(game, cell, mark)
+  def make_move(%Game{move: player_move} = game, cell, mark, player) when player == player_move do
+    update_player_move(game, player)
+    |> Map.put(cell, mark)
     |> check_game_state()
+  end
+
+  def make_move(%Game{move: player_move} = game, _cell, _mark, player)
+      when player != player_move do
+    IO.puts("WRONG PLAYER TRYING TO MOVE, it's #{player_move}'s turn!")
+    game
   end
 
   # Horizontal wins--------------------------
@@ -83,5 +91,15 @@ defmodule Tictactoe.Game do
   def check_if_draw(false, game) do
     IO.puts("DRAW!")
     %{game | state: :draw}
+  end
+
+  # player 1 just moved, it's now player 2 turn to move
+  defp update_player_move(game, _player = :p1) do
+    Map.put(game, :move, :p2)
+  end
+
+  # player 2 just moved, it's now player 1 turn to move
+  defp update_player_move(game, _player = :p2) do
+    Map.put(game, :move, :p1)
   end
 end

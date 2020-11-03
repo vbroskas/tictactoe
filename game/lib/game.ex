@@ -6,5 +6,5 @@ defmodule Game do
   """
 
   defdelegate start_game(), to: Game
-  defdelegate make_move(game, cell, mark), to: Game
+  defdelegate make_move(game, cell, mark, player), to: Game
 end
