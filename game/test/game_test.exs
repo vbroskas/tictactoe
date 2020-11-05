@@ -14,7 +14,7 @@ defmodule GameTest do
     assert game.c7 == nil
     assert game.c8 == nil
     assert game.c9 == nil
-    assert game.state == :playing
+    assert game.game_state == :playing
   end
 
   test "can make a move" do
@@ -27,7 +27,7 @@ defmodule GameTest do
     assert game.c5 == "x"
     assert game.c2 == "o"
     assert game.c9 == "o"
-    assert game.state == :playing
+    assert game.game_state == :playing
   end
 
   test "horizontal win" do
@@ -37,7 +37,7 @@ defmodule GameTest do
     game = Game.make_move(game, :c2, "x", :p1)
     game = Game.make_move(game, :c5, "x", :p2)
     game = Game.make_move(game, :c3, "x", :p1)
-    assert game.state == :won
+    assert game.game_state == :won
   end
 
   test "vertical win" do
@@ -47,7 +47,7 @@ defmodule GameTest do
     game = Game.make_move(game, :c4, "x", :p1)
     game = Game.make_move(game, :c6, "o", :p2)
     game = Game.make_move(game, :c7, "x", :p1)
-    assert game.state == :won
+    assert game.game_state == :won
   end
 
   test "diagonal win" do
@@ -57,7 +57,7 @@ defmodule GameTest do
     game = Game.make_move(game, :c5, "x", :p1)
     game = Game.make_move(game, :c3, "o", :p2)
     game = Game.make_move(game, :c9, "x", :p1)
-    assert game.state == :won
+    assert game.game_state == :won
   end
 
   test "draw" do
@@ -71,7 +71,7 @@ defmodule GameTest do
     game = Game.make_move(game, :c6, "x", :p1)
     game = Game.make_move(game, :c9, "o", :p2)
     game = Game.make_move(game, :c7, "x", :p1)
-    assert game.state == :draw
+    assert game.game_state == :draw
   end
 
   test "player can't move when it's not their turn" do
