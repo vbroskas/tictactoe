@@ -1,6 +1,4 @@
 defmodule Tictactoe.Game do
-  alias Tictactoe.Game
-
   @game %{
     game_state: :playing,
     move: :x,
@@ -19,8 +17,10 @@ defmodule Tictactoe.Game do
   }
 
   @scores %{
-    "x" => 10,
-    "o" => -10,
+    #! !!!!! I forgot that from the perspective of the computer playing, THE COMP IS THE MAXIMIZING PLAYER!!!
+    # x should be -10!!!
+    "x" => -10,
+    "o" => 10,
     "draw" => 0
   }
   def start_game() do
@@ -54,11 +54,13 @@ defmodule Tictactoe.Game do
     {:game_over, winner}
   end
 
-  # game is still playing
+  # still playing computers turn
   def check_if_game_over(%{game_state: :playing, move: :o} = game) do
-    computer_move(game)
+    # computer_move(game)
+    comp_move_smart(game)
   end
 
+  # still playing, human turn
   def check_if_game_over(%{game_state: :playing, move: :x} = game) do
     game
   end
@@ -105,11 +107,6 @@ defmodule Tictactoe.Game do
     %{game | game_state: :won, winner: mark}
   end
 
-  def check_for_win(%{board: %{c3: mark, c5: mark, c7: mark}} = game)
-      when is_binary(mark) do
-    %{game | game_state: :won, winner: mark}
-  end
-
   # no win, check for draw
   def check_for_win(game) do
     Map.values(game.board)
@@ -122,8 +119,6 @@ defmodule Tictactoe.Game do
 
   # player 1 just moved, it's now player 2 turn to move - game still playing
   defp update_player_move(game, _player = :x) do
-    IO.puts("in update x just moved")
-    IO.inspect(game)
     Map.put(game, :move, :o)
   end
 
@@ -135,40 +130,30 @@ defmodule Tictactoe.Game do
   end
 
   def computer_move(game) do
-    # set best_score = -10_000_000
-    # get open cells and pick a random one
-    open_cells =
-      for {k, nil} <- game.board,
-          do: k
+    cell_pick =
+      get_open_cells(game)
+      |> Enum.random()
 
-    # enumerate over open_cells
-    # create a board map for each open_cell, where the open_cell is marked "o"
-    # pass that board map to minimax with score = minimax(board, 0 , false)
-    # empty out the temp board map
-    # if score > best_score, set best_score = score and set move = the open_cell
-
-    # at the end of the enumerate of open_cells, you will have a move for a single open cell, now officially call make_move() for that cell
-
-    cell_pick = Enum.random(open_cells)
-
-    # pick random cell
-    IO.puts("Comp about to move...")
     make_move(game, cell_pick, "o", :o)
   end
 
   def comp_move_smart(game) do
-    open_cells =
-      for {k, nil} <- game.board,
-          do: k
+    open_cells = get_open_cells(game)
 
-    {_score, cell} =
-      Enum.reduce(open_cells, {-10_000_000, nil}, fn cell, {best_score, move} ->
-        game = mark_cell(game, cell, "o")
-        score = minimax(game, 0, false)
+    {_best_score, cell} =
+      Enum.reduce(open_cells, {-1000, nil}, fn cell, {best_score, move} ->
+        new_game_state = mark_cell(game, cell, "o")
+        score = minimax(new_game_state, 0, false)
+
+        IO.puts("<<<<<<<<<< #{cell} >>> #{best_score} >>>>> #{move} >>>>")
 
         if score > best_score do
+          IO.puts("=====NEW HIGH=======")
+          IO.inspect("Score: #{score}, cell: #{cell}")
           {score, cell}
         else
+          IO.puts("=====NO CHANGE=======")
+          IO.inspect("current-score: #{best_score}, current-cell: #{move}")
           {best_score, move}
         end
       end)
@@ -176,35 +161,55 @@ defmodule Tictactoe.Game do
     make_move(game, cell, "o", :o)
   end
 
-  # Terminal case, game has been won or lost
-  def minimax(%{game_state: state} = game, _depth, _maximizing) when state in [:win, :draw] do
+  # def minimax(game, depth = 2, _) do
+  #   IO.puts("OUT---")
+  #   IO.inspect(game)
+  #   IO.puts("------")
+  # end
+
+  # Terminal case, game has been won,lost or draw.
+  def minimax(%{game_state: state} = game, depth, _maximizing)
+      when state in [:won, :draw] do
+    # cond do
+    #   game.winner == "x" -> @scores[game.winner] + depth
+    #   game.winner == "o" -> @scores[game.winner] - depth
+    #   game.winner == "draw" -> @scores[game.winner]
+    # end
     @scores[game.winner]
   end
 
-  def minimax(board, depth, maximizing = true) do
-    # check if board has a winner, if yes return @scores[winning_mark]
-    case check_for_win(board) do
-      nil ->
-        nil
-    end
+  def minimax(game, depth, _maximizing = true) do
+    # get all open cells
+    open_cells = get_open_cells(game)
 
-    best_score = -10_000_000
-    # loop over all open cells in board
-    # for each cell create new board map with that cell marked "o"
-    # pass new board map to minimax(board, depth + 1, false)
-    # wipe board map
-    # best_score = max(score, best_score)
-    # -------end of loop---
+    best_score =
+      Enum.reduce(open_cells, -1000, fn cell, acc ->
+        # comp play
+        new_game_state = mark_cell(game, cell, "o")
+        score = minimax(new_game_state, depth + 1, false)
+        max(score, acc)
+      end)
+
+    best_score
   end
 
-  def minimax(board, depth, maximizing = false) do
-    # check if board has a winner, if yes return @scores[winning_mark]
-    best_score = 10_000_000
-    # loop over all open cells in board
-    # for each cell create new board map with that cell marked "x"
-    # pass new board map to minimax(board, depth + 1, true)
-    # wipe board map
-    # best_score = min(score, best_score)
-    # -------end of loop---
+  def minimax(game, depth, _maximizing = false) do
+    # get all open cells
+    open_cells = get_open_cells(game)
+
+    best_score =
+      Enum.reduce(open_cells, 1000, fn cell, acc ->
+        # human play
+        new_game_state = mark_cell(game, cell, "x")
+        score = minimax(new_game_state, depth + 1, true)
+        min(score, acc)
+      end)
+
+    best_score
+  end
+
+  defp get_open_cells(game) do
+    for {k, nil} <- game.board,
+        do: k
   end
 end
