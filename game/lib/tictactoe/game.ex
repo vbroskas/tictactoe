@@ -156,6 +156,26 @@ defmodule Tictactoe.Game do
     make_move(game, cell_pick, "o", :o)
   end
 
+  def comp_move_smart(game) do
+    open_cells =
+      for {k, nil} <- game.board,
+          do: k
+
+    {_score, cell} =
+      Enum.reduce(open_cells, {-10_000_000, nil}, fn cell, {best_score, move} ->
+        game = mark_cell(game, cell, "o")
+        score = minimax(game, 0, false)
+
+        if score > best_score do
+          {score, cell}
+        else
+          {best_score, move}
+        end
+      end)
+
+    make_move(game, cell, "o", :o)
+  end
+
   # Terminal case, game has been won or lost
   def minimax(%{game_state: state} = game, _depth, _maximizing) when state in [:win, :draw] do
     @scores[game.winner]
