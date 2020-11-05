@@ -16,9 +16,8 @@ defmodule Tictactoe.Game do
     }
   }
 
+  # minimax written where comp "o" is the maximizing player
   @scores %{
-    #! !!!!! I forgot that from the perspective of the computer playing, THE COMP IS THE MAXIMIZING PLAYER!!!
-    # x should be -10!!!
     "x" => -10,
     "o" => 10,
     "draw" => 0
@@ -56,7 +55,7 @@ defmodule Tictactoe.Game do
 
   # still playing computers turn
   def check_if_game_over(%{game_state: :playing, move: :o} = game) do
-    # computer_move(game)
+    # computer_random_move(game)
     comp_move_smart(game)
   end
 
@@ -117,19 +116,17 @@ defmodule Tictactoe.Game do
     end
   end
 
-  # player 1 just moved, it's now player 2 turn to move - game still playing
+  # player 1 just moved, now player 2 move
   defp update_player_move(game, _player = :x) do
     Map.put(game, :move, :o)
   end
 
-  # player 2 just moved, it's now player 1 turn to move - game still playing
+  # player 2 just moved, now player 1 move
   defp update_player_move(game, _player = :o) do
-    IO.puts("in update o just moved")
-    IO.inspect(game)
     Map.put(game, :move, :x)
   end
 
-  def computer_move(game) do
+  def computer_random_move(game) do
     cell_pick =
       get_open_cells(game)
       |> Enum.random()
@@ -145,15 +142,9 @@ defmodule Tictactoe.Game do
         new_game_state = mark_cell(game, cell, "o")
         score = minimax(new_game_state, 0, false)
 
-        IO.puts("<<<<<<<<<< #{cell} >>> #{best_score} >>>>> #{move} >>>>")
-
         if score > best_score do
-          IO.puts("=====NEW HIGH=======")
-          IO.inspect("Score: #{score}, cell: #{cell}")
           {score, cell}
         else
-          IO.puts("=====NO CHANGE=======")
-          IO.inspect("current-score: #{best_score}, current-cell: #{move}")
           {best_score, move}
         end
       end)
@@ -161,51 +152,50 @@ defmodule Tictactoe.Game do
     make_move(game, cell, "o", :o)
   end
 
-  # def minimax(game, depth = 2, _) do
-  #   IO.puts("OUT---")
-  #   IO.inspect(game)
-  #   IO.puts("------")
-  # end
+  @doc """
+  Base cases, game has been won,lost or draw. return score with adjustment for depth
+  """
+  defp minimax(%{game_state: state, winner: "x"} = game, depth, _maximizing)
+       when state in [:won, :draw] do
+    @scores[game.winner] + depth
+  end
 
-  # Terminal case, game has been won,lost or draw.
-  def minimax(%{game_state: state} = game, depth, _maximizing)
-      when state in [:won, :draw] do
-    # cond do
-    #   game.winner == "x" -> @scores[game.winner] + depth
-    #   game.winner == "o" -> @scores[game.winner] - depth
-    #   game.winner == "draw" -> @scores[game.winner]
-    # end
+  defp minimax(%{game_state: state, winner: "o"} = game, depth, _maximizing)
+       when state in [:won, :draw] do
+    @scores[game.winner] - depth
+  end
+
+  defp minimax(%{game_state: state, winner: "draw"} = game, _depth, _maximizing)
+       when state in [:won, :draw] do
     @scores[game.winner]
   end
 
-  def minimax(game, depth, _maximizing = true) do
+  @doc """
+  "o" is the maximizing player
+  """
+  defp minimax(game, depth, _maximizing = true) do
     # get all open cells
-    open_cells = get_open_cells(game)
-
-    best_score =
-      Enum.reduce(open_cells, -1000, fn cell, acc ->
-        # comp play
-        new_game_state = mark_cell(game, cell, "o")
-        score = minimax(new_game_state, depth + 1, false)
-        max(score, acc)
-      end)
-
-    best_score
+    get_open_cells(game)
+    |> Enum.reduce(-1000, fn cell, acc ->
+      # comp play
+      new_game_state = mark_cell(game, cell, "o")
+      score = minimax(new_game_state, depth + 1, false)
+      max(score, acc)
+    end)
   end
 
-  def minimax(game, depth, _maximizing = false) do
+  @doc """
+  "x" is the minimizing player
+  """
+  defp minimax(game, depth, _maximizing = false) do
     # get all open cells
-    open_cells = get_open_cells(game)
-
-    best_score =
-      Enum.reduce(open_cells, 1000, fn cell, acc ->
-        # human play
-        new_game_state = mark_cell(game, cell, "x")
-        score = minimax(new_game_state, depth + 1, true)
-        min(score, acc)
-      end)
-
-    best_score
+    get_open_cells(game)
+    |> Enum.reduce(1000, fn cell, acc ->
+      # human play
+      new_game_state = mark_cell(game, cell, "x")
+      score = minimax(new_game_state, depth + 1, true)
+      min(score, acc)
+    end)
   end
 
   defp get_open_cells(game) do
