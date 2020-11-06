@@ -47,67 +47,93 @@ defmodule Tictactoe.Game do
     |> check_for_win()
   end
 
+  def computer_random_move(game) do
+    cell_pick =
+      get_open_cells(game)
+      |> Enum.random()
+
+    make_move(game, cell_pick, "o", :o)
+  end
+
+  def comp_move_smart(game) do
+    open_cells = get_open_cells(game)
+
+    {_best_score, cell} =
+      Enum.reduce(open_cells, {-1000, nil}, fn cell, {best_score, move} ->
+        new_game_state = mark_cell(game, cell, "o")
+        score = minimax(new_game_state, 0, -1000, 1000, false)
+
+        if score > best_score do
+          {score, cell}
+        else
+          {best_score, move}
+        end
+      end)
+
+    make_move(game, cell, "o", :o)
+  end
+
   # game is over, return msg with result
-  def check_if_game_over(%{game_state: state, winner: winner})
-      when state in [:won, :draw] do
+  defp check_if_game_over(%{game_state: state, winner: winner})
+       when state in [:won, :draw] do
     {:game_over, winner}
   end
 
   # still playing computers turn
-  def check_if_game_over(%{game_state: :playing, move: :o} = game) do
+  defp check_if_game_over(%{game_state: :playing, move: :o} = game) do
     # computer_random_move(game)
     comp_move_smart(game)
   end
 
   # still playing, human turn
-  def check_if_game_over(%{game_state: :playing, move: :x} = game) do
+  defp check_if_game_over(%{game_state: :playing, move: :x} = game) do
     game
   end
 
   # Horizontal wins--------------------------
-  def check_for_win(%{board: %{c1: mark, c2: mark, c3: mark}} = game) when is_binary(mark) do
+  defp check_for_win(%{board: %{c1: mark, c2: mark, c3: mark}} = game) when is_binary(mark) do
     %{game | game_state: :won, winner: mark}
   end
 
-  def check_for_win(%{board: %{c4: mark, c5: mark, c6: mark}} = game)
-      when is_binary(mark) do
+  defp check_for_win(%{board: %{c4: mark, c5: mark, c6: mark}} = game)
+       when is_binary(mark) do
     %{game | game_state: :won, winner: mark}
   end
 
-  def check_for_win(%{board: %{c7: mark, c8: mark, c9: mark}} = game)
-      when is_binary(mark) do
+  defp check_for_win(%{board: %{c7: mark, c8: mark, c9: mark}} = game)
+       when is_binary(mark) do
     %{game | game_state: :won, winner: mark}
   end
 
   # Vertical wins--------------------------
-  def check_for_win(%{board: %{c1: mark, c4: mark, c7: mark}} = game)
-      when is_binary(mark) do
+  defp check_for_win(%{board: %{c1: mark, c4: mark, c7: mark}} = game)
+       when is_binary(mark) do
     %{game | game_state: :won, winner: mark}
   end
 
-  def check_for_win(%{board: %{c2: mark, c5: mark, c8: mark}} = game)
-      when is_binary(mark) do
+  defp check_for_win(%{board: %{c2: mark, c5: mark, c8: mark}} = game)
+       when is_binary(mark) do
     %{game | game_state: :won, winner: mark}
   end
 
-  def check_for_win(%{board: %{c3: mark, c6: mark, c9: mark}} = game)
-      when is_binary(mark) do
+  defp check_for_win(%{board: %{c3: mark, c6: mark, c9: mark}} = game)
+       when is_binary(mark) do
     %{game | game_state: :won, winner: mark}
   end
 
   # Diagonal wins--------------------------
-  def check_for_win(%{board: %{c1: mark, c5: mark, c9: mark}} = game)
-      when is_binary(mark) do
+  defp check_for_win(%{board: %{c1: mark, c5: mark, c9: mark}} = game)
+       when is_binary(mark) do
     %{game | game_state: :won, winner: mark}
   end
 
-  def check_for_win(%{board: %{c3: mark, c5: mark, c7: mark}} = game)
-      when is_binary(mark) do
+  defp check_for_win(%{board: %{c3: mark, c5: mark, c7: mark}} = game)
+       when is_binary(mark) do
     %{game | game_state: :won, winner: mark}
   end
 
   # no win, check for draw
-  def check_for_win(game) do
+  defp check_for_win(game) do
     Map.values(game.board)
     |> Enum.member?(nil)
     |> case do
@@ -126,78 +152,78 @@ defmodule Tictactoe.Game do
     Map.put(game, :move, :x)
   end
 
-  def computer_random_move(game) do
-    cell_pick =
-      get_open_cells(game)
-      |> Enum.random()
-
-    make_move(game, cell_pick, "o", :o)
-  end
-
-  def comp_move_smart(game) do
-    open_cells = get_open_cells(game)
-
-    {_best_score, cell} =
-      Enum.reduce(open_cells, {-1000, nil}, fn cell, {best_score, move} ->
-        new_game_state = mark_cell(game, cell, "o")
-        score = minimax(new_game_state, 0, false)
-
-        if score > best_score do
-          {score, cell}
-        else
-          {best_score, move}
-        end
-      end)
-
-    make_move(game, cell, "o", :o)
-  end
-
   @doc """
   Base cases, game has been won,lost or draw. return score with adjustment for depth
   """
-  defp minimax(%{game_state: state, winner: "x"} = game, depth, _maximizing)
+  defp minimax(%{game_state: state, winner: "x"} = game, depth, _alpha, _beta, _maximizing)
        when state in [:won, :draw] do
     @scores[game.winner] + depth
   end
 
-  defp minimax(%{game_state: state, winner: "o"} = game, depth, _maximizing)
+  defp minimax(%{game_state: state, winner: "o"} = game, depth, _alpha, _beta, _maximizing)
        when state in [:won, :draw] do
     @scores[game.winner] - depth
   end
 
-  defp minimax(%{game_state: state, winner: "draw"} = game, _depth, _maximizing)
+  defp minimax(%{game_state: state, winner: "draw"} = game, _depth, _alpha, _beta, _maximizing)
        when state in [:won, :draw] do
     @scores[game.winner]
   end
 
   @doc """
-  "o" is the maximizing player
+  "o" (computer) is the maximizing player
+  the accumulator in this funciton only needs to account for a "best score" (initialized at -1000) and the alpha accumulator {-1000, alpha}
   """
-  defp minimax(game, depth, _maximizing = true) do
-    # get all open cells
-    get_open_cells(game)
-    |> Enum.reduce(-1000, fn cell, acc ->
-      # comp play
-      new_game_state = mark_cell(game, cell, "o")
-      score = minimax(new_game_state, depth + 1, false)
-      max(score, acc)
-    end)
+  defp minimax(game, depth, alpha, beta, _maximizing = true) do
+    {score, _} =
+      get_open_cells(game)
+      |> Enum.reduce_while({-1000, alpha}, fn cell, {acc, alpha_acc} ->
+        new_game_state = mark_cell(game, cell, "o")
+
+        score = minimax(new_game_state, depth + 1, alpha_acc, beta, false)
+        new_acc = max(score, acc)
+        new_alpha = max(new_acc, alpha_acc)
+
+        if new_alpha >= beta do
+          # prune rest of branch
+          {:halt, {acc, alpha_acc}}
+        else
+          {:cont, {new_acc, new_alpha}}
+        end
+      end)
+
+    score
   end
 
   @doc """
-  "x" is the minimizing player
+  "x" (human) is the minimizing player
+  the accumulator in this funciton only needs to account for a "best score" (initialized at 1000) and the beta accumulator {1000, beta}
+
   """
-  defp minimax(game, depth, _maximizing = false) do
-    # get all open cells
-    get_open_cells(game)
-    |> Enum.reduce(1000, fn cell, acc ->
-      # human play
-      new_game_state = mark_cell(game, cell, "x")
-      score = minimax(new_game_state, depth + 1, true)
-      min(score, acc)
-    end)
+  defp minimax(game, depth, alpha, beta, _maximizing = false) do
+    {score, _} =
+      get_open_cells(game)
+      |> Enum.reduce_while({1000, beta}, fn cell, {acc, beta_acc} ->
+        new_game_state = mark_cell(game, cell, "x")
+
+        score = minimax(new_game_state, depth + 1, alpha, beta_acc, true)
+        new_acc = min(score, acc)
+        new_beta = min(new_acc, beta_acc)
+
+        if new_beta <= alpha do
+          # prune rest of branch
+          {:halt, {acc, beta_acc}}
+        else
+          {:cont, {new_acc, new_beta}}
+        end
+      end)
+
+    score
   end
 
+  @doc """
+  get all open cells on the game board
+  """
   defp get_open_cells(game) do
     for {k, nil} <- game.board,
         do: k

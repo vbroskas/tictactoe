@@ -34,6 +34,7 @@ defmodule GameTest do
     game = Game.make_move(game, :c3, "x", :x)
 
     assert game.game_state == :won
+    assert game.winner == "x"
   end
 
   @doc """
@@ -45,6 +46,7 @@ defmodule GameTest do
     game = Game.make_move(game, :c4, "x", :x)
     game = Game.make_move(game, :c7, "x", :x)
     assert game.game_state == :won
+    assert game.winner == "x"
   end
 
   @doc """
@@ -73,6 +75,7 @@ defmodule GameTest do
     game = Game.make_move(game, :c9, "o", :o)
     game = Game.make_move(game, :c7, "x", :x)
     assert game.game_state == :draw
+    assert game.winner == "draw"
   end
 
   test "player can't move when it's not their turn" do
