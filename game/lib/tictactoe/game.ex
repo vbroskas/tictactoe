@@ -22,8 +22,20 @@ defmodule Tictactoe.Game do
     "o" => 10,
     "draw" => 0
   }
-  def start_game() do
+
+  @doc """
+  human "x" moves first
+  """
+  def start_game(true) do
     @game
+  end
+
+  @doc """
+  comp "o" moves first
+  """
+  def start_game(false) do
+    %{@game | move: :o}
+    |> comp_move_smart()
   end
 
   def make_move(%{move: player_to_move} = game, cell, mark, player)
@@ -172,7 +184,10 @@ defmodule Tictactoe.Game do
 
   @doc """
   "o" (computer) is the maximizing player
+  alpha starts at -1000, beta at 1000.
   the accumulator in this funciton only needs to account for a "best score" (initialized at -1000) and the alpha accumulator {-1000, alpha}
+  alpha represents the best already discovered score along the path to the root for the maximizer
+  When it is maximixing turn, it wants a score that's greater than the current alpha, but <= than current beta
   """
   defp minimax(game, depth, alpha, beta, _maximizing = true) do
     {score, _} =
@@ -182,9 +197,10 @@ defmodule Tictactoe.Game do
 
         score = minimax(new_game_state, depth + 1, alpha_acc, beta, false)
         new_acc = max(score, acc)
-        new_alpha = max(new_acc, alpha_acc)
+        # Fixed bug, where I was calculating new alpha based on max(new_acc, alpha_acc)
+        new_alpha = max(score, alpha_acc)
 
-        if new_alpha >= beta do
+        if beta <= new_alpha do
           # prune rest of branch
           {:halt, {acc, alpha_acc}}
         else
@@ -198,6 +214,8 @@ defmodule Tictactoe.Game do
   @doc """
   "x" (human) is the minimizing player
   the accumulator in this funciton only needs to account for a "best score" (initialized at 1000) and the beta accumulator {1000, beta}
+  beta represents the best already discovered score along the path to the root for the maximizer
+  When it is minimizing turn, it wants a score that's less than the current beta, but greater than current alpha
 
   """
   defp minimax(game, depth, alpha, beta, _maximizing = false) do
@@ -208,7 +226,8 @@ defmodule Tictactoe.Game do
 
         score = minimax(new_game_state, depth + 1, alpha, beta_acc, true)
         new_acc = min(score, acc)
-        new_beta = min(new_acc, beta_acc)
+        # Fixed bug, where I was calculating new_beta based on min(new_acc, beta_acc)
+        new_beta = min(score, beta_acc)
 
         if new_beta <= alpha do
           # prune rest of branch
