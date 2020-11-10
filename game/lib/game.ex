@@ -5,7 +5,7 @@ defmodule Game do
   Api for `Game`.
   """
 
-  defdelegate start_game(first_move), to: Game
+  defdelegate start_game(human_moves_first), to: Game
 
   defdelegate make_move(game, cell, mark, player), to: Game
 end

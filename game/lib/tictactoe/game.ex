@@ -40,6 +40,7 @@ defmodule Tictactoe.Game do
 
   def make_move(%{move: player_to_move} = game, cell, mark, player)
       when player == player_to_move do
+    # TODO put check to ensure cell is empty?
     game
     |> mark_cell(cell, mark)
     |> update_player_move(player)
@@ -54,7 +55,6 @@ defmodule Tictactoe.Game do
 
   # Mark a cell on the board
   def mark_cell(game, cell, mark) do
-    # TODO put check to ensure cell is empty?
     %{game | board: Map.put(game.board, cell, mark)}
     |> check_for_win()
   end
