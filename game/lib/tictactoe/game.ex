@@ -85,20 +85,21 @@ defmodule Tictactoe.Game do
     make_move(game, cell, "o", :o)
   end
 
-  # game is over, return msg with result
-  defp check_if_game_over(%{game_state: state, winner: winner})
-       when state in [:won, :draw] do
-    {:game_over, winner}
-  end
-
   # still playing computers turn
   defp check_if_game_over(%{game_state: :playing, move: :o} = game) do
-    # computer_random_move(game)
+    # TURN OFF Computer move when running some tests!
     comp_move_smart(game)
+    # game
   end
 
   # still playing, human turn
   defp check_if_game_over(%{game_state: :playing, move: :x} = game) do
+    game
+  end
+
+  # GAME OVER, return game
+  defp check_if_game_over(%{game_state: state, winner: _winner} = game)
+       when state in [:won, :draw] do
     game
   end
 
@@ -167,6 +168,12 @@ defmodule Tictactoe.Game do
   @doc """
   Base cases, game has been won,lost or draw. return score with adjustment for depth
   """
+
+  # defp minimax(%{game_state: state, winner: "x"} = game, depth, _alpha, _beta, _maximizing)
+  #      when state in [:won, :draw] do
+  #   @scores[game.winner] + depth
+  # end
+
   defp minimax(%{game_state: state, winner: "x"} = game, depth, _alpha, _beta, _maximizing)
        when state in [:won, :draw] do
     @scores[game.winner] + depth
@@ -197,12 +204,14 @@ defmodule Tictactoe.Game do
 
         score = minimax(new_game_state, depth + 1, alpha_acc, beta, false)
         new_acc = max(score, acc)
-        # Fixed bug, where I was calculating new alpha based on max(new_acc, alpha_acc)
-        new_alpha = max(score, alpha_acc)
+
+        # Fixed bug, where I was calculating new alpha based on max(score, alpha_acc)  min(new_acc, beta_acc)!
+        new_alpha = max(new_acc, alpha_acc)
 
         if beta <= new_alpha do
           # prune rest of branch
-          {:halt, {acc, alpha_acc}}
+          # found bug where on halt I was returning {acc, alpha_acc} instead of {new_acc, alpha_acc}
+          {:halt, {new_acc, alpha_acc}}
         else
           {:cont, {new_acc, new_alpha}}
         end
@@ -226,12 +235,14 @@ defmodule Tictactoe.Game do
 
         score = minimax(new_game_state, depth + 1, alpha, beta_acc, true)
         new_acc = min(score, acc)
-        # Fixed bug, where I was calculating new_beta based on min(new_acc, beta_acc)
-        new_beta = min(score, beta_acc)
+
+        # Fixed bug, where I was calculating new_beta based on min(score, beta_acc) instead of min(new_acc, beta_acc)
+        new_beta = min(new_acc, beta_acc)
 
         if new_beta <= alpha do
           # prune rest of branch
-          {:halt, {acc, beta_acc}}
+          # found bug where on halt I was returning {acc, alpha_acc} instead of {new_acc, alpha_acc}
+          {:halt, {new_acc, beta_acc}}
         else
           {:cont, {new_acc, new_beta}}
         end
