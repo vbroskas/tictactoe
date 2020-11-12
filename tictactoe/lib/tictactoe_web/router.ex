@@ -1,5 +1,6 @@
 defmodule TictactoeWeb.Router do
   use TictactoeWeb, :router
+  import Phoenix.LiveView.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -18,6 +19,7 @@ defmodule TictactoeWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
+    live "/game", GameLive, :index
   end
 
   # Other scopes may use custom stacks.

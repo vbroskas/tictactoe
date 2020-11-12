@@ -12,10 +12,10 @@ defmodule Tictactoe.GameSupervisor do
     DynamicSupervisor.init(strategy: :one_for_one)
   end
 
-  def start_game_server() do
+  def start_game_server(game_id) do
     DynamicSupervisor.start_child(
       __MODULE__,
-      {Tictactoe.GameServer, [create_temp_fake_game_id()]}
+      {Tictactoe.GameServer, [game_id]}
     )
   end
 

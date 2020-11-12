@@ -1,0 +1,165 @@
+<h1>DEMO LIVE COMPONENT</h1>
+
+
+<%= live_component @socket, ToggleCell, active: (@cells["c1"] || nil) do %>
+    <button
+      type="button"
+      phx-target="<%= @myself %>"
+      phx-click="mark"
+      phx-value-cell="c1"
+	>
+
+
+      <%= if @active == nil do %>
+        OPEN
+      <% else %>
+        CLOSED
+      <% end %>
+
+    </button>
+  <% end %>
+
+  <%= live_component @socket, ToggleCell, active: (@cells["c2"] || nil) do %>
+    <button
+      type="button"
+      phx-target="<%= @myself %>"
+      phx-click="mark"
+      phx-value-cell="c2"
+	>
+
+
+      <%= if @active == nil do %>
+        OPEN
+      <% else %>
+        CLOSED
+      <% end %>
+
+    </button>
+  <% end %>
+
+  <%= live_component @socket, ToggleCell, active: (@cells["c3"] || nil) do %>
+    <button
+      type="button"
+      phx-target="<%= @myself %>"
+      phx-click="mark"
+      phx-value-cell="c3"
+	>
+
+
+      <%= if @active == nil do %>
+        OPEN
+      <% else %>
+        CLOSED
+      <% end %>
+
+    </button>
+  <% end %>
+
+  <%= live_component @socket, ToggleCell, active: (@cells["c4"] || nil) do %>
+    <button
+      type="button"
+      phx-target="<%= @myself %>"
+      phx-click="mark"
+      phx-value-cell="c4"
+	>
+
+
+      <%= if @active == nil do %>
+        OPEN
+      <% else %>
+        CLOSED
+      <% end %>
+
+    </button>
+  <% end %>
+
+
+<%= live_component @socket, ToggleCell, active: (@cells["c5"] || nil) do %>
+    <button
+      type="button"
+      phx-target="<%= @myself %>"
+      phx-click="mark"
+      phx-value-cell="c5"
+	>
+
+
+      <%= if @active == nil do %>
+        OPEN
+      <% else %>
+        CLOSED
+      <% end %>
+
+    </button>
+  <% end %>
+
+  <%= live_component @socket, ToggleCell, active: (@cells["c6"] || nil) do %>
+    <button
+      type="button"
+      phx-target="<%= @myself %>"
+      phx-click="mark"
+      phx-value-cell="c6"
+	>
+
+
+      <%= if @active == nil do %>
+        OPEN
+      <% else %>
+        CLOSED
+      <% end %>
+
+    </button>
+  <% end %>
+
+  <%= live_component @socket, ToggleCell, active: (@cells["c7"] || nil) do %>
+    <button
+      type="button"
+      phx-target="<%= @myself %>"
+      phx-click="mark"
+      phx-value-cell="c7"
+	>
+
+
+      <%= if @active == nil do %>
+        OPEN
+      <% else %>
+        CLOSED
+      <% end %>
+
+    </button>
+  <% end %>
+
+  <%= live_component @socket, ToggleCell, active: (@cells["c8"] || nil) do %>
+    <button
+      type="button"
+      phx-target="<%= @myself %>"
+      phx-click="mark"
+      phx-value-cell="c8"
+	>
+
+
+      <%= if @active == nil do %>
+        OPEN
+      <% else %>
+        CLOSED
+      <% end %>
+
+    </button>
+  <% end %>
+
+  <%= live_component @socket, ToggleCell, active: (@cells["c9"] || nil) do %>
+    <button
+      type="button"
+      phx-target="<%= @myself %>"
+      phx-click="mark"
+      phx-value-cell="c9"
+	>
+
+
+      <%= if @active == nil do %>
+        OPEN
+      <% else %>
+        CLOSED
+      <% end %>
+
+    </button>
+  <% end %>
