@@ -5,9 +5,7 @@ defmodule TictactoeWeb.GameComponent do
 
   def mount(socket) do
     game = Game.start_game(true)
-
     socket = update_game_socket_assigns(socket, game)
-
     {:ok, socket}
   end
 

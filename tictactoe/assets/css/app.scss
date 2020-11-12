@@ -1,5 +1,5 @@
 /* This file is for your main application css. */
-@import "./phoenix.css";
+// @import "./phoenix.css";
 @import "../node_modules/nprogress/nprogress.css";
 
 /* LiveView specific classes for your customizations */
@@ -89,3 +89,28 @@
 .alert:empty {
   display: none;
 }
+
+
+.grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: 1fr 1fr 1fr;
+	grid-gap: 10px;
+  }
+  
+  .grid button {
+	height: 15rem;
+    font-size: 11em;
+    display: grid;
+    text-align: center;
+
+  }
+
+  
+
+
+  @media (max-width: 400px) {
+	.grid {
+	  grid-template-columns: 1fr;
+	}
+  }

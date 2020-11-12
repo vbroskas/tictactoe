@@ -1,4 +1,6 @@
-<h1>DEMO LIVE COMPONENT</h1>
+<h1>DEMO Game Interface</h1>
+
+<div class="grid" >
 
 
 <%= live_component @socket, ToggleCell, active: (@cells["c1"] || nil) do %>
@@ -7,13 +9,15 @@
       phx-target="<%= @myself %>"
       phx-click="mark"
       phx-value-cell="c1"
+	  <%= if @active != nil do %>
+	  disabled
+	  <% end %>
 	>
 
-
       <%= if @active == nil do %>
-        OPEN
+
       <% else %>
-        CLOSED
+        <%= @active %>
       <% end %>
 
     </button>
@@ -25,13 +29,15 @@
       phx-target="<%= @myself %>"
       phx-click="mark"
       phx-value-cell="c2"
+	  <%= if @active != nil do %>
+	  disabled
+	  <% end %>
 	>
 
-
       <%= if @active == nil do %>
-        OPEN
+
       <% else %>
-        CLOSED
+        <%= @active %>
       <% end %>
 
     </button>
@@ -43,13 +49,15 @@
       phx-target="<%= @myself %>"
       phx-click="mark"
       phx-value-cell="c3"
+	  <%= if @active != nil do %>
+	  disabled
+	  <% end %>
 	>
 
-
       <%= if @active == nil do %>
-        OPEN
+
       <% else %>
-        CLOSED
+        <%= @active %>
       <% end %>
 
     </button>
@@ -61,13 +69,15 @@
       phx-target="<%= @myself %>"
       phx-click="mark"
       phx-value-cell="c4"
+	  <%= if @active != nil do %>
+	  disabled
+	  <% end %>
 	>
 
-
       <%= if @active == nil do %>
-        OPEN
+
       <% else %>
-        CLOSED
+        <%= @active %>
       <% end %>
 
     </button>
@@ -80,13 +90,15 @@
       phx-target="<%= @myself %>"
       phx-click="mark"
       phx-value-cell="c5"
+	  <%= if @active != nil do %>
+	  disabled
+	  <% end %>
 	>
 
-
       <%= if @active == nil do %>
-        OPEN
+
       <% else %>
-        CLOSED
+        <%= @active %>
       <% end %>
 
     </button>
@@ -98,13 +110,15 @@
       phx-target="<%= @myself %>"
       phx-click="mark"
       phx-value-cell="c6"
+	  <%= if @active != nil do %>
+	  disabled
+	  <% end %>
 	>
 
-
       <%= if @active == nil do %>
-        OPEN
+
       <% else %>
-        CLOSED
+        <%= @active %>
       <% end %>
 
     </button>
@@ -116,13 +130,15 @@
       phx-target="<%= @myself %>"
       phx-click="mark"
       phx-value-cell="c7"
+	  <%= if @active != nil do %>
+	  disabled
+	  <% end %>
 	>
 
-
       <%= if @active == nil do %>
-        OPEN
+
       <% else %>
-        CLOSED
+        <%= @active %>
       <% end %>
 
     </button>
@@ -134,14 +150,17 @@
       phx-target="<%= @myself %>"
       phx-click="mark"
       phx-value-cell="c8"
+	  <%= if @active != nil do %>
+	  disabled
+	  <% end %>
 	>
 
+	<%= if @active == nil do %>
 
-      <%= if @active == nil do %>
-        OPEN
       <% else %>
-        CLOSED
+        <%= @active %>
       <% end %>
+
 
     </button>
   <% end %>
@@ -152,14 +171,18 @@
       phx-target="<%= @myself %>"
       phx-click="mark"
       phx-value-cell="c9"
+	  <%= if @active != nil do %>
+	  disabled
+	  <% end %>
 	>
 
-
       <%= if @active == nil do %>
-        OPEN
+
       <% else %>
-        CLOSED
+        <%= @active %>
       <% end %>
 
     </button>
   <% end %>
+
+</div>
