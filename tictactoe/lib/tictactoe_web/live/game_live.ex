@@ -10,7 +10,7 @@ defmodule TictactoeWeb.GameLive do
   def render(assigns) do
     ~L"""
 
-    <%= live_component @socket, GameComponent, id: "game"%>
+    <%= live_component @socket, GameComponent, id: :game %>
 
     """
   end

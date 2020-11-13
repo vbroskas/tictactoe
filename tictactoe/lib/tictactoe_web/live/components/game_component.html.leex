@@ -1,7 +1,10 @@
 <h1>DEMO Game Interface</h1>
 
 <button phx-click="comp_goes_first" phx-target="<%= @myself %>">Computer Move First</button>
-
+<button phx-click="human_goes_first" phx-target="<%= @myself %>">I Move First</button>
+<%= if @game.game_state in [:won, :draw] do %>
+	   <h1>GAME OVER</h1>
+      <% end %>
 <div class="grid" >
 
 
