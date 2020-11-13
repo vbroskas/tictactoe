@@ -16,11 +16,17 @@ defmodule TictactoeWeb.GameComponent do
   end
 
   def handle_event("mark", %{"cell" => cell}, socket) do
-    IO.puts("YOU CLICKED: #{cell}")
     game = socket.assigns.game
     game = Game.make_move(game, String.to_atom(cell), "x", :x)
     IO.inspect(game)
 
+    socket = update_game_socket_assigns(socket, game)
+
+    {:noreply, socket}
+  end
+
+  def handle_event("comp_goes_first", _params, socket) do
+    game = Game.start_game(false)
     socket = update_game_socket_assigns(socket, game)
 
     {:noreply, socket}

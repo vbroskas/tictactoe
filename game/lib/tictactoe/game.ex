@@ -24,16 +24,10 @@ defmodule Tictactoe.Game do
     "draw" => 0
   }
 
-  @doc """
-  human "x" moves first
-  """
   def start_game(true) do
     @game
   end
 
-  @doc """
-  comp "o" moves first
-  """
   def start_game(false) do
     %{@game | move: :o}
     |> comp_move_smart()
@@ -180,12 +174,6 @@ defmodule Tictactoe.Game do
   @doc """
   Base cases, game has been won,lost or draw. return score with adjustment for depth
   """
-
-  # defp minimax(%{game_state: state, winner: "x"} = game, depth, _alpha, _beta, _maximizing)
-  #      when state in [:won, :draw] do
-  #   @scores[game.winner] + depth
-  # end
-
   defp minimax(%{game_state: state, winner: "x"} = game, depth, _alpha, _beta, _maximizing)
        when state in [:won, :draw] do
     @scores[game.winner] + depth
@@ -216,13 +204,9 @@ defmodule Tictactoe.Game do
 
         score = minimax(new_game_state, depth + 1, alpha_acc, beta, false)
         new_acc = max(score, acc)
-
-        # Fixed bug, where I was calculating new alpha based on max(score, alpha_acc)  min(new_acc, beta_acc)!
         new_alpha = max(new_acc, alpha_acc)
 
         if beta <= new_alpha do
-          # prune rest of branch
-          # found bug where on halt I was returning {acc, alpha_acc} instead of {new_acc, alpha_acc}
           {:halt, {new_acc, alpha_acc}}
         else
           {:cont, {new_acc, new_alpha}}
@@ -247,13 +231,9 @@ defmodule Tictactoe.Game do
 
         score = minimax(new_game_state, depth + 1, alpha, beta_acc, true)
         new_acc = min(score, acc)
-
-        # Fixed bug, where I was calculating new_beta based on min(score, beta_acc) instead of min(new_acc, beta_acc)
         new_beta = min(new_acc, beta_acc)
 
         if new_beta <= alpha do
-          # prune rest of branch
-          # found bug where on halt I was returning {acc, alpha_acc} instead of {new_acc, alpha_acc}
           {:halt, {new_acc, beta_acc}}
         else
           {:cont, {new_acc, new_beta}}
