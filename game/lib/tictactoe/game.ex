@@ -3,6 +3,7 @@ defmodule Tictactoe.Game do
     game_state: :playing,
     move: :x,
     winner: nil,
+    winning_cells: [],
     board: %{
       c1: nil,
       c2: nil,
@@ -38,7 +39,7 @@ defmodule Tictactoe.Game do
     |> comp_move_smart()
   end
 
-  def make_move(%{move: player_to_move} = game, cell, mark, player)
+  def make_move(%{move: player_to_move, game_state: :playing} = game, cell, mark, player)
       when player == player_to_move do
     # TODO put check to ensure cell is empty?
     game
@@ -47,9 +48,20 @@ defmodule Tictactoe.Game do
     |> check_if_game_over
   end
 
+  @doc """
+  wrong player trying to move
+  """
   def make_move(%{move: player_to_move} = game, _cell, _mark, player)
       when player != player_to_move do
     IO.puts("WRONG PLAYER TRYING TO MOVE, it's #{player_to_move}'s turn!")
+    game
+  end
+
+  @doc """
+  game is over, no not allow additional moves
+  """
+  def make_move(%{game_state: state} = game, _cell, _mark, _player)
+      when state in [:won, :draw] do
     game
   end
 
@@ -105,44 +117,44 @@ defmodule Tictactoe.Game do
 
   # Horizontal wins--------------------------
   defp check_for_win(%{board: %{c1: mark, c2: mark, c3: mark}} = game) when is_binary(mark) do
-    %{game | game_state: :won, winner: mark}
+    %{game | game_state: :won, winner: mark, winning_cells: [:c1, :c2, :c3]}
   end
 
   defp check_for_win(%{board: %{c4: mark, c5: mark, c6: mark}} = game)
        when is_binary(mark) do
-    %{game | game_state: :won, winner: mark}
+    %{game | game_state: :won, winner: mark, winning_cells: [:c4, :c5, :c6]}
   end
 
   defp check_for_win(%{board: %{c7: mark, c8: mark, c9: mark}} = game)
        when is_binary(mark) do
-    %{game | game_state: :won, winner: mark}
+    %{game | game_state: :won, winner: mark, winning_cells: [:c7, :c8, :c9]}
   end
 
   # Vertical wins--------------------------
   defp check_for_win(%{board: %{c1: mark, c4: mark, c7: mark}} = game)
        when is_binary(mark) do
-    %{game | game_state: :won, winner: mark}
+    %{game | game_state: :won, winner: mark, winning_cells: [:c1, :c4, :c7]}
   end
 
   defp check_for_win(%{board: %{c2: mark, c5: mark, c8: mark}} = game)
        when is_binary(mark) do
-    %{game | game_state: :won, winner: mark}
+    %{game | game_state: :won, winner: mark, winning_cells: [:c2, :c5, :c8]}
   end
 
   defp check_for_win(%{board: %{c3: mark, c6: mark, c9: mark}} = game)
        when is_binary(mark) do
-    %{game | game_state: :won, winner: mark}
+    %{game | game_state: :won, winner: mark, winning_cells: [:c3, :c6, :c9]}
   end
 
   # Diagonal wins--------------------------
   defp check_for_win(%{board: %{c1: mark, c5: mark, c9: mark}} = game)
        when is_binary(mark) do
-    %{game | game_state: :won, winner: mark}
+    %{game | game_state: :won, winner: mark, winning_cells: [:c1, :c5, :c9]}
   end
 
   defp check_for_win(%{board: %{c3: mark, c5: mark, c7: mark}} = game)
        when is_binary(mark) do
-    %{game | game_state: :won, winner: mark}
+    %{game | game_state: :won, winner: mark, winning_cells: [:c3, :c5, :c7]}
   end
 
   # no win, check for draw

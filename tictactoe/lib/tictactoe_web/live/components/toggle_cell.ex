@@ -3,7 +3,7 @@ defmodule TictactoeWeb.ToggleCell do
 
   def render(assigns) do
     ~L"""
-    <%= @inner_content.(active: @active) %>
+    <%= @inner_content.(state: @state) %>
 
     """
   end

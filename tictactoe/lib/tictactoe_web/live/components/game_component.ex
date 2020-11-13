@@ -30,15 +30,15 @@ defmodule TictactoeWeb.GameComponent do
     socket
     |> assign(:game, game)
     |> assign(:cells, %{
-      "c1" => game.board.c1,
-      "c2" => game.board.c2,
-      "c3" => game.board.c3,
-      "c4" => game.board.c4,
-      "c5" => game.board.c5,
-      "c6" => game.board.c6,
-      "c7" => game.board.c7,
-      "c8" => game.board.c8,
-      "c9" => game.board.c9
+      c1: game.board.c1,
+      c2: game.board.c2,
+      c3: game.board.c3,
+      c4: game.board.c4,
+      c5: game.board.c5,
+      c6: game.board.c6,
+      c7: game.board.c7,
+      c8: game.board.c8,
+      c9: game.board.c9
     })
   end
 

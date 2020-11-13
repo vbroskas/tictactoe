@@ -3,183 +3,193 @@
 <div class="grid" >
 
 
-<%= live_component @socket, ToggleCell, active: (@cells["c1"] || nil) do %>
+<%= live_component @socket, ToggleCell, state: (@cells.c1 || nil) do %>
     <button
       type="button"
       phx-target="<%= @myself %>"
       phx-click="mark"
       phx-value-cell="c1"
-	  <%= if @active != nil do %>
-	  disabled
+	  <%= if @state != nil do %>
+	   disabled
 	  <% end %>
+	  <%= if :c1 in @game.winning_cells do %>
+	   class="winner"
+      <% end %>
 	>
 
-      <%= if @active == nil do %>
-
-      <% else %>
-        <%= @active %>
+      <%= if @state != nil do %>
+		<%= @state %>
       <% end %>
 
     </button>
   <% end %>
 
-  <%= live_component @socket, ToggleCell, active: (@cells["c2"] || nil) do %>
+  <%= live_component @socket, ToggleCell, state: (@cells.c2 || nil) do %>
     <button
       type="button"
       phx-target="<%= @myself %>"
       phx-click="mark"
       phx-value-cell="c2"
-	  <%= if @active != nil do %>
-	  disabled
+	  <%= if @state != nil do %>
+	   disabled
 	  <% end %>
+	  <%= if :c2 in @game.winning_cells do %>
+	   class="winner"
+      <% end %>
 	>
 
-      <%= if @active == nil do %>
-
-      <% else %>
-        <%= @active %>
+      <%= if @state != nil do %>
+		<%= @state %>
       <% end %>
 
     </button>
   <% end %>
 
-  <%= live_component @socket, ToggleCell, active: (@cells["c3"] || nil) do %>
+  <%= live_component @socket, ToggleCell, state: (@cells.c3 || nil) do %>
     <button
       type="button"
       phx-target="<%= @myself %>"
       phx-click="mark"
       phx-value-cell="c3"
-	  <%= if @active != nil do %>
-	  disabled
+	  <%= if @state != nil do %>
+	   disabled
 	  <% end %>
+	  <%= if :c3 in @game.winning_cells do %>
+	   class="winner"
+      <% end %>
 	>
 
-      <%= if @active == nil do %>
-
-      <% else %>
-        <%= @active %>
+      <%= if @state != nil do %>
+		<%= @state %>
       <% end %>
 
     </button>
   <% end %>
 
-  <%= live_component @socket, ToggleCell, active: (@cells["c4"] || nil) do %>
+  <%= live_component @socket, ToggleCell, state: (@cells.c4 || nil) do %>
     <button
       type="button"
       phx-target="<%= @myself %>"
       phx-click="mark"
       phx-value-cell="c4"
-	  <%= if @active != nil do %>
-	  disabled
+	  <%= if @state != nil do %>
+	   disabled
 	  <% end %>
+	  <%= if :c4 in @game.winning_cells do %>
+	   class="winner"
+      <% end %>
 	>
 
-      <%= if @active == nil do %>
-
-      <% else %>
-        <%= @active %>
+      <%= if @state != nil do %>
+		<%= @state %>
       <% end %>
 
     </button>
   <% end %>
 
 
-<%= live_component @socket, ToggleCell, active: (@cells["c5"] || nil) do %>
+<%= live_component @socket, ToggleCell, state: (@cells.c5 || nil) do %>
     <button
       type="button"
       phx-target="<%= @myself %>"
       phx-click="mark"
       phx-value-cell="c5"
-	  <%= if @active != nil do %>
-	  disabled
+	  <%= if @state != nil do %>
+	   disabled
 	  <% end %>
+	  <%= if :c5 in @game.winning_cells do %>
+	   class="winner"
+      <% end %>
 	>
 
-      <%= if @active == nil do %>
-
-      <% else %>
-        <%= @active %>
+      <%= if @state != nil do %>
+		<%= @state %>
       <% end %>
 
     </button>
   <% end %>
 
-  <%= live_component @socket, ToggleCell, active: (@cells["c6"] || nil) do %>
+  <%= live_component @socket, ToggleCell, state: (@cells.c6 || nil) do %>
     <button
       type="button"
       phx-target="<%= @myself %>"
       phx-click="mark"
       phx-value-cell="c6"
-	  <%= if @active != nil do %>
-	  disabled
+	  <%= if @state != nil do %>
+	   disabled
 	  <% end %>
+	  <%= if :c6 in @game.winning_cells do %>
+	   class="winner"
+      <% end %>
 	>
 
-      <%= if @active == nil do %>
-
-      <% else %>
-        <%= @active %>
+      <%= if @state != nil do %>
+		<%= @state %>
       <% end %>
 
     </button>
   <% end %>
 
-  <%= live_component @socket, ToggleCell, active: (@cells["c7"] || nil) do %>
+  <%= live_component @socket, ToggleCell, state: (@cells.c7 || nil) do %>
     <button
       type="button"
       phx-target="<%= @myself %>"
       phx-click="mark"
       phx-value-cell="c7"
-	  <%= if @active != nil do %>
-	  disabled
+	  <%= if @state != nil do %>
+	   disabled
 	  <% end %>
+	  <%= if :c7 in @game.winning_cells do %>
+	   class="winner"
+      <% end %>
 	>
 
-      <%= if @active == nil do %>
-
-      <% else %>
-        <%= @active %>
+      <%= if @state != nil do %>
+		<%= @state %>
       <% end %>
 
     </button>
   <% end %>
 
-  <%= live_component @socket, ToggleCell, active: (@cells["c8"] || nil) do %>
+  <%= live_component @socket, ToggleCell, state: (@cells.c8 || nil) do %>
     <button
       type="button"
       phx-target="<%= @myself %>"
       phx-click="mark"
       phx-value-cell="c8"
-	  <%= if @active != nil do %>
-	  disabled
+	  <%= if @state != nil do %>
+	   disabled
 	  <% end %>
+	  <%= if :c8 in @game.winning_cells do %>
+	   class="winner"
+      <% end %>
 	>
 
-	<%= if @active == nil do %>
-
-      <% else %>
-        <%= @active %>
+	<%= if @state != nil do %>
+		<%= @state %>
       <% end %>
 
 
     </button>
   <% end %>
 
-  <%= live_component @socket, ToggleCell, active: (@cells["c9"] || nil) do %>
+  <%= live_component @socket, ToggleCell, state: (@cells.c9 || nil) do %>
     <button
       type="button"
+
       phx-target="<%= @myself %>"
       phx-click="mark"
       phx-value-cell="c9"
-	  <%= if @active != nil do %>
-	  disabled
+	  <%= if @state != nil do %>
+	   disabled
 	  <% end %>
+	  <%= if :c9 in @game.winning_cells do %>
+	   class="winner"
+      <% end %>
 	>
 
-      <%= if @active == nil do %>
-
-      <% else %>
-        <%= @active %>
+      <%= if @state != nil do %>
+		<%= @state %>
       <% end %>
 
     </button>

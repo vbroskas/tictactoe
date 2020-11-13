@@ -90,6 +90,14 @@
   display: none;
 }
 
+.container{
+	margin: 0 auto;
+	max-width: 60.0rem;
+	padding: 0 2.0rem;
+	position: relative;
+	width: 100%
+  }
+
 
 .grid {
 	display: grid;
@@ -102,9 +110,14 @@
 	height: 15rem;
     font-size: 11em;
     display: grid;
-    text-align: center;
+	text-align: center;
+	cursor: pointer;
 
   }
+
+.winner{
+	border: 1px solid red;
+}
 
   
 
