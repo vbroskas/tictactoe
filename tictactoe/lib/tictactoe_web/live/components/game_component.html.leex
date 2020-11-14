@@ -219,15 +219,15 @@
   <!-- Modal Content (The Image) -->
   <div class="modal-content">
 	<%= if @game.winner == "O" do %>
-	<img src="/images/O_wins.png" alt="o wins!"/>
+	<img class="modal-img" src="/images/lose.png" alt="You lose!"/>
 	<% end %>
 
 	<%= if @game.winner == "X" do %>
-	<img src="/images/X_wins.png" alt="o wins!"/>
+	<img class="modal-img" src="/images/win.png" alt="You win!"/>
 	<% end %>
 
 	<%= if @game.winner == "draw" do %>
-	<img src="/images/draw.png" alt="o wins!"/>
+	<img class="modal-img" src="/images/draw.png" alt="Draw!"/>
 	<% end %>
   </div>
 
