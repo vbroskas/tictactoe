@@ -7,13 +7,12 @@ defmodule TictactoeWeb.GameComponent do
 
     socket =
       socket
-      |> assign(human_moves_first: true)
+      |> assign(human_moves_first: true, display_modal: false)
       |> update_game_socket_assigns(game)
 
     {:ok, socket}
   end
 
-  @spec update(maybe_improper_list | map, Phoenix.LiveView.Socket.t()) :: {:ok, any}
   def update(assigns, socket) do
     {:ok,
      socket
@@ -22,14 +21,13 @@ defmodule TictactoeWeb.GameComponent do
 
   def handle_event("mark", %{"cell" => cell}, socket) do
     game = socket.assigns.game
-    game = Game.make_move(game, String.to_atom(cell), "x", :x)
-
-    socket = update_game_socket_assigns(socket, game)
+    game = Game.make_move(game, String.to_atom(cell), "X", :x)
+    socket = process_move(game, socket)
 
     {:noreply, socket}
   end
 
-  def handle_event("comp_goes_first", _params, socket) do
+  def handle_event("comp_moves_first", _params, socket) do
     game = Game.start_game(false)
 
     socket =
@@ -40,7 +38,7 @@ defmodule TictactoeWeb.GameComponent do
     {:noreply, socket}
   end
 
-  def handle_event("human_goes_first", _params, socket) do
+  def handle_event("human_moves_first", _params, socket) do
     game = Game.start_game(true)
 
     socket =
@@ -52,8 +50,14 @@ defmodule TictactoeWeb.GameComponent do
   end
 
   def handle_event("start_new_game", _params, socket) do
-    game = Game.start_game(socket.assigns.human_goes_first)
-    socket = update_game_socket_assigns(socket, game)
+    IO.inspect(socket.assigns)
+    game = Game.start_game(socket.assigns.human_moves_first)
+
+    socket =
+      socket
+      |> assign(display_modal: false)
+      |> update_game_socket_assigns(game)
+
     {:noreply, socket}
   end
 
@@ -73,5 +77,16 @@ defmodule TictactoeWeb.GameComponent do
         c9: game.board.c9
       }
     )
+  end
+
+  defp process_move(%{game_state: state} = game, socket) when state in [:won, :draw] do
+    socket
+    |> assign(display_modal: true)
+    |> update_game_socket_assigns(game)
+  end
+
+  defp process_move(game, socket) do
+    socket
+    |> update_game_socket_assigns(game)
   end
 end

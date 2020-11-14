@@ -2,6 +2,11 @@
 // @import "./phoenix.css";
 @import "../node_modules/nprogress/nprogress.css";
 
+
+body{
+	font-family: 'Sansita Swashed', cursive;
+}
+
 /* LiveView specific classes for your customizations */
 .invalid-feedback {
   color: #a94442;
@@ -112,12 +117,74 @@
     display: grid;
 	text-align: center;
 	cursor: pointer;
+	font-family: 'Sansita Swashed', cursive;
+	caret-color: transparent !important;
 
   }
 
 .winner{
-	border: 1px solid red;
+	border: 2px solid red;
 }
+
+
+
+// ------MODAL-----
+.modal {
+	place-items: center;
+	display: grid; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0,0,0); /* Fallback color */
+	background-color: #0000004f;
+  }
+
+
+  
+  /* Modal Content (Image) */
+  .modal-content {
+	margin: 2rem auto;
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    color: red;
+    font-size: 4rem;
+  }
+  
+  /* Add Animation - Zoom in the Modal */
+  .modal-content {
+	animation-name: zoom;
+	animation-duration: 0.6s;
+  }
+  
+  @keyframes zoom {
+	from {transform:scale(0)}
+	to {transform:scale(1)}
+  }
+  
+  /* The Close Button */
+  .close {
+	position: absolute;
+	top: 15px;
+	right: 35px;
+	color: #f1f1f1;
+	font-size: 40px;
+	font-weight: bold;
+	transition: 0.3s;
+	caret-color: transparent !important;
+  }
+  
+  .close:hover,
+  .close:focus {
+	color: #bbb;
+	text-decoration: none;
+	cursor: pointer;
+  }
 
   
 

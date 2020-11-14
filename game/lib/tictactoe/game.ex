@@ -17,10 +17,10 @@ defmodule Tictactoe.Game do
     }
   }
 
-  # minimax written where comp "o" is the maximizing player
+  # minimax written where comp "O" is the maximizing player
   @scores %{
-    "x" => -10,
-    "o" => 10,
+    "X" => -10,
+    "O" => 10,
     "draw" => 0
   }
 
@@ -70,7 +70,7 @@ defmodule Tictactoe.Game do
       get_open_cells(game)
       |> Enum.random()
 
-    make_move(game, cell_pick, "o", :o)
+    make_move(game, cell_pick, "O", :o)
   end
 
   def comp_move_smart(game) do
@@ -78,7 +78,7 @@ defmodule Tictactoe.Game do
 
     {_best_score, cell} =
       Enum.reduce(open_cells, {-1000, nil}, fn cell, {best_score, move} ->
-        new_game_state = mark_cell(game, cell, "o")
+        new_game_state = mark_cell(game, cell, "O")
         score = minimax(new_game_state, 0, -1000, 1000, false)
 
         if score > best_score do
@@ -88,7 +88,7 @@ defmodule Tictactoe.Game do
         end
       end)
 
-    make_move(game, cell, "o", :o)
+    make_move(game, cell, "O", :o)
   end
 
   # still playing computers turn
@@ -174,12 +174,12 @@ defmodule Tictactoe.Game do
   @doc """
   Base cases, game has been won,lost or draw. return score with adjustment for depth
   """
-  defp minimax(%{game_state: state, winner: "x"} = game, depth, _alpha, _beta, _maximizing)
+  defp minimax(%{game_state: state, winner: "X"} = game, depth, _alpha, _beta, _maximizing)
        when state in [:won, :draw] do
     @scores[game.winner] + depth
   end
 
-  defp minimax(%{game_state: state, winner: "o"} = game, depth, _alpha, _beta, _maximizing)
+  defp minimax(%{game_state: state, winner: "O"} = game, depth, _alpha, _beta, _maximizing)
        when state in [:won, :draw] do
     @scores[game.winner] - depth
   end
@@ -190,7 +190,7 @@ defmodule Tictactoe.Game do
   end
 
   @doc """
-  "o" (computer) is the maximizing player
+  "O" (computer) is the maximizing player
   alpha starts at -1000, beta at 1000.
   the accumulator in this funciton only needs to account for a "best score" (initialized at -1000) and the alpha accumulator {-1000, alpha}
   alpha represents the best already discovered score along the path to the root for the maximizer
@@ -200,7 +200,7 @@ defmodule Tictactoe.Game do
     {score, _} =
       get_open_cells(game)
       |> Enum.reduce_while({-1000, alpha}, fn cell, {acc, alpha_acc} ->
-        new_game_state = mark_cell(game, cell, "o")
+        new_game_state = mark_cell(game, cell, "O")
 
         score = minimax(new_game_state, depth + 1, alpha_acc, beta, false)
         new_acc = max(score, acc)
@@ -217,7 +217,7 @@ defmodule Tictactoe.Game do
   end
 
   @doc """
-  "x" (human) is the minimizing player
+  "X" (human) is the minimizing player
   the accumulator in this funciton only needs to account for a "best score" (initialized at 1000) and the beta accumulator {1000, beta}
   beta represents the best already discovered score along the path to the root for the maximizer
   When it is minimizing turn, it wants a score that's less than the current beta, but greater than current alpha
@@ -227,7 +227,7 @@ defmodule Tictactoe.Game do
     {score, _} =
       get_open_cells(game)
       |> Enum.reduce_while({1000, beta}, fn cell, {acc, beta_acc} ->
-        new_game_state = mark_cell(game, cell, "x")
+        new_game_state = mark_cell(game, cell, "X")
 
         score = minimax(new_game_state, depth + 1, alpha, beta_acc, true)
         new_acc = min(score, acc)

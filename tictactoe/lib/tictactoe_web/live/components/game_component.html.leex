@@ -1,12 +1,10 @@
 <h1>DEMO Game Interface</h1>
 
-<button phx-click="comp_goes_first" phx-target="<%= @myself %>">Computer Move First</button>
-<button phx-click="human_goes_first" phx-target="<%= @myself %>">I Move First</button>
-<%= if @game.game_state in [:won, :draw] do %>
-	   <h1>GAME OVER</h1>
-      <% end %>
-<div class="grid" >
+<button phx-click="comp_moves_first" phx-target="<%= @myself %>">Computer Move First</button>
+<button phx-click="human_moves_first" phx-target="<%= @myself %>">I Move First</button>
 
+
+<div class="grid" >
 
 <%= live_component @socket, ToggleCell, state: (@cells.c1 || nil) do %>
     <button
@@ -181,7 +179,6 @@
   <%= live_component @socket, ToggleCell, state: (@cells.c9 || nil) do %>
     <button
       type="button"
-
       phx-target="<%= @myself %>"
       phx-click="mark"
       phx-value-cell="c9"
@@ -199,5 +196,44 @@
 
     </button>
   <% end %>
+
+
+
+
+
+<%= if @display_modal == true do %>
+  <div
+   id="myModal"
+   class="modal"
+   phx-target="<%= @myself %>"
+   phx-click="start_new_game"
+   >
+
+  <!-- The Close Button -->
+  <span
+  class="close"
+  >
+  &times;
+  </span>
+
+  <!-- Modal Content (The Image) -->
+  <div class="modal-content">
+	<%= if @game.winner == "O" do %>
+	<img src="/images/O_wins.png" alt="o wins!"/>
+	<% end %>
+
+	<%= if @game.winner == "X" do %>
+	<img src="/images/X_wins.png" alt="o wins!"/>
+	<% end %>
+
+	<%= if @game.winner == "draw" do %>
+	<img src="/images/draw.png" alt="o wins!"/>
+	<% end %>
+  </div>
+
+
+	</div>
+
+	<% end %>
 
 </div>
