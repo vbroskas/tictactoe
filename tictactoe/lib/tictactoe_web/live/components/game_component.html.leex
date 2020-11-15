@@ -1,7 +1,10 @@
-<h1>DEMO Game Interface</h1>
+<h1>Lose or Draw Tic-Tac-Toe</h1>
 
-<button phx-click="comp_moves_first" phx-target="<%= @myself %>">Computer Move First</button>
-<button phx-click="human_moves_first" phx-target="<%= @myself %>">I Move First</button>
+<div class="move-grid">
+<button class="goes-first <%= if not @human_moves_first do %>first-move<% end %>" phx-click="comp_moves_first" phx-target="<%= @myself %>">Computer Goes First</button>
+<button class="goes-first <%= if @human_moves_first do %>first-move<% end %>" phx-click="human_moves_first" phx-target="<%= @myself %>">I Go First</button>
+</div>
+
 
 
 <div class="grid" >
@@ -172,7 +175,6 @@
 		<%= @state %>
       <% end %>
 
-
     </button>
   <% end %>
 
@@ -198,42 +200,36 @@
   <% end %>
 
 
+	<!-- Game Over Modal -->
+  <%= if @display_modal == true do %>
+	<div
+	id="myModal"
+	class="modal"
+	phx-target="<%= @myself %>"
+	phx-click="start_new_game"
+	>
 
+		<!-- The Close Button -->
+		<span class="close">&times;</span>
 
+		<!-- Modal Content (The Image) -->
+		<div class="modal-content">
+			<%= if @game.winner == "O" do %>
+			<img class="modal-img" src="/images/lose.png" alt="You lose!"/>
+			<% end %>
 
-<%= if @display_modal == true do %>
-  <div
-   id="myModal"
-   class="modal"
-   phx-target="<%= @myself %>"
-   phx-click="start_new_game"
-   >
+			<%= if @game.winner == "X" do %>
+			<img class="modal-img" src="/images/win.png" alt="You win!"/>
+			<% end %>
 
-  <!-- The Close Button -->
-  <span
-  class="close"
-  >
-  &times;
-  </span>
-
-  <!-- Modal Content (The Image) -->
-  <div class="modal-content">
-	<%= if @game.winner == "O" do %>
-	<img class="modal-img" src="/images/lose.png" alt="You lose!"/>
-	<% end %>
-
-	<%= if @game.winner == "X" do %>
-	<img class="modal-img" src="/images/win.png" alt="You win!"/>
-	<% end %>
-
-	<%= if @game.winner == "draw" do %>
-	<img class="modal-img" src="/images/draw.png" alt="Draw!"/>
-	<% end %>
-  </div>
+			<%= if @game.winner == "draw" do %>
+			<img class="modal-img" src="/images/draw.png" alt="Draw!"/>
+			<% end %>
+		</div>
 
 
 	</div>
 
-	<% end %>
+  <% end %>
 
 </div>

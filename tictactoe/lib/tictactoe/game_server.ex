@@ -11,8 +11,6 @@ defmodule Tictactoe.GameServer do
   end
 
   def make_move(%{game_id: id, cell: _cell, mark: _mark, player: _player} = move) do
-    IO.puts("MAKE MOOOOVE")
-    IO.inspect(move)
     GenServer.call({:via, Registry, {GameRegistry, id}}, {:make_move, move})
   end
 
