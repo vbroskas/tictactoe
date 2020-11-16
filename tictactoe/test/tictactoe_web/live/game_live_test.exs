@@ -33,7 +33,7 @@ defmodule TictactoeWeb.GameLiveTest do
     assert view |> element("[phx-value-cell=\"c1\"]") |> render() =~ "O"
   end
 
-  test "human goes first resets game", %{conn: conn} do
+  test "human goes first button resets game", %{conn: conn} do
     {:ok, view, html} = live(conn, "/")
     assert view |> element("[phx-value-cell=\"c1\"]") |> render() =~ ""
     assert view |> element("[phx-click=\"comp_moves_first\"]") |> render_click()
