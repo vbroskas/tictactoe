@@ -203,10 +203,11 @@
 	<!-- Game Over Modal -->
   <%= if @display_modal == true do %>
 	<div
-	id="myModal"
+	id="game-modal"
 	class="modal"
 	phx-target="<%= @myself %>"
 	phx-click="start_new_game"
+	phx-value-modal="modal"
 	>
 
 		<!-- The Close Button -->
