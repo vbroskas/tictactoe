@@ -35,7 +35,6 @@ defmodule Tictactoe.Game do
 
   def make_move(%{move: player_to_move, game_state: :playing} = game, cell, mark, player)
       when player == player_to_move do
-    # TODO put check to ensure cell is empty?
     game
     |> mark_cell(cell, mark)
     |> update_player_move(player)
@@ -93,7 +92,7 @@ defmodule Tictactoe.Game do
 
   # still playing computers turn
   defp check_if_game_over(%{game_state: :playing, move: :o} = game) do
-    # TURN OFF Computer move when running some tests!
+    # TURN OFF comp_move_smart  when running some tests and just return a game map here!
     comp_move_smart(game)
     # game
   end

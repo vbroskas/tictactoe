@@ -5,11 +5,11 @@
 
 body{
 	font-family: 'Roboto', sans-serif;
-	background-color: #261b31;
+	background-color: #cac3d0;;
 }
 
 h1{
-	color:#b7b2b8;
+	color:#414043;
 	text-align: center;
 }
 
@@ -114,7 +114,7 @@ h1{
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-template-rows: 1fr 1fr 1fr;
-	grid-gap: 5px;
+	grid-gap: 1px;
   }
 
   .move-grid{
@@ -152,6 +152,7 @@ h1{
     padding: 1rem;
     font-family: 'Roboto', sans-serif;
 	font-size: 20px;
+	font-weight: 600;
 	cursor: pointer;
 }
 .goes-first:focus {

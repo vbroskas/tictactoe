@@ -25,8 +25,8 @@ defmodule GameTest do
 
   test "can make a move" do
     game = Game.start_game(true)
-    game = Game.make_move(game, :c1, "x", :x)
-    assert game.board.c1 == "x"
+    game = Game.make_move(game, :c1, "X", :x)
+    assert game.board.c1 == "X"
     assert game.game_state == :playing
   end
 
@@ -35,14 +35,14 @@ defmodule GameTest do
   """
   test "horizontal win" do
     game = Game.start_game(true)
-    game = Game.make_move(game, :c1, "x", :x)
-    game = Game.make_move(game, :c7, "o", :o)
-    game = Game.make_move(game, :c2, "x", :x)
-    game = Game.make_move(game, :c8, "o", :o)
-    game = Game.make_move(game, :c3, "x", :x)
+    game = Game.make_move(game, :c1, "X", :x)
+    game = Game.make_move(game, :c7, "O", :o)
+    game = Game.make_move(game, :c2, "X", :x)
+    game = Game.make_move(game, :c8, "O", :o)
+    game = Game.make_move(game, :c3, "X", :x)
 
     assert game.game_state == :won
-    assert game.winner == "x"
+    assert game.winner == "X"
   end
 
   @doc """
@@ -50,13 +50,13 @@ defmodule GameTest do
   """
   test "vertical win" do
     game = Game.start_game(true)
-    game = Game.make_move(game, :c1, "x", :x)
-    game = Game.make_move(game, :c3, "o", :o)
-    game = Game.make_move(game, :c4, "x", :x)
-    game = Game.make_move(game, :c6, "o", :o)
-    game = Game.make_move(game, :c7, "x", :x)
+    game = Game.make_move(game, :c1, "X", :x)
+    game = Game.make_move(game, :c3, "O", :o)
+    game = Game.make_move(game, :c4, "X", :x)
+    game = Game.make_move(game, :c6, "O", :o)
+    game = Game.make_move(game, :c7, "X", :x)
     assert game.game_state == :won
-    assert game.winner == "x"
+    assert game.winner == "X"
   end
 
   @doc """
@@ -64,13 +64,13 @@ defmodule GameTest do
   """
   test "diagonal win" do
     game = Game.start_game(true)
-    game = Game.make_move(game, :c1, "x", :x)
-    game = Game.make_move(game, :c4, "o", :o)
-    game = Game.make_move(game, :c5, "x", :x)
-    game = Game.make_move(game, :c7, "o", :o)
-    game = Game.make_move(game, :c9, "x", :x)
+    game = Game.make_move(game, :c1, "X", :x)
+    game = Game.make_move(game, :c4, "O", :o)
+    game = Game.make_move(game, :c5, "X", :x)
+    game = Game.make_move(game, :c7, "O", :o)
+    game = Game.make_move(game, :c9, "X", :x)
     assert game.game_state == :won
-    assert game.winner == "x"
+    assert game.winner == "X"
   end
 
   @doc """
@@ -78,15 +78,15 @@ defmodule GameTest do
   """
   test "draw" do
     game = Game.start_game(true)
-    game = Game.make_move(game, :c1, "x", :x)
-    game = Game.make_move(game, :c2, "o", :o)
-    game = Game.make_move(game, :c3, "x", :x)
-    game = Game.make_move(game, :c5, "o", :o)
-    game = Game.make_move(game, :c8, "x", :x)
-    game = Game.make_move(game, :c4, "o", :o)
-    game = Game.make_move(game, :c6, "x", :x)
-    game = Game.make_move(game, :c9, "o", :o)
-    game = Game.make_move(game, :c7, "x", :x)
+    game = Game.make_move(game, :c1, "X", :x)
+    game = Game.make_move(game, :c2, "O", :o)
+    game = Game.make_move(game, :c3, "X", :x)
+    game = Game.make_move(game, :c5, "O", :o)
+    game = Game.make_move(game, :c8, "X", :x)
+    game = Game.make_move(game, :c4, "O", :o)
+    game = Game.make_move(game, :c6, "X", :x)
+    game = Game.make_move(game, :c9, "O", :o)
+    game = Game.make_move(game, :c7, "X", :x)
     assert game.game_state == :draw
     assert game.winner == "draw"
   end
@@ -94,7 +94,7 @@ defmodule GameTest do
   test "player can't move when it's not their turn" do
     game = Game.start_game(true)
     assert game.move == :x
-    game = Game.make_move(game, :c1, "o", :o)
+    game = Game.make_move(game, :c1, "O", :o)
     assert game.move == :x
     assert game.board.c1 == nil
   end
@@ -105,35 +105,35 @@ defmodule GameTest do
 
   test "comp will win in 3 moves if human plays poorly--human goes first -- first run" do
     game = Game.start_game(true)
-    game = Game.make_move(game, :c5, "x", :x)
-    game = Game.make_move(game, :c7, "x", :x)
-    game = Game.make_move(game, :c8, "x", :x)
+    game = Game.make_move(game, :c5, "X", :x)
+    game = Game.make_move(game, :c7, "X", :x)
+    game = Game.make_move(game, :c8, "X", :x)
     assert game.game_state == :won
-    assert game.winner == "o"
+    assert game.winner == "O"
   end
 
   test "comp will win in 3 moves if human plays poorly--human goes first -- second run" do
     game = Game.start_game(true)
-    game = Game.make_move(game, :c1, "x", :x)
-    game = Game.make_move(game, :c9, "x", :x)
-    game = Game.make_move(game, :c7, "x", :x)
+    game = Game.make_move(game, :c1, "X", :x)
+    game = Game.make_move(game, :c9, "X", :x)
+    game = Game.make_move(game, :c7, "X", :x)
     assert game.game_state == :won
-    assert game.winner == "o"
+    assert game.winner == "O"
   end
 
   test "comp will win in 3 moves if human plays poorly--comp goes first -- first run" do
     game = Game.start_game(false)
-    game = Game.make_move(game, :c5, "x", :x)
-    game = Game.make_move(game, :c7, "x", :x)
+    game = Game.make_move(game, :c5, "X", :x)
+    game = Game.make_move(game, :c7, "X", :x)
     assert game.game_state == :won
-    assert game.winner == "o"
+    assert game.winner == "O"
   end
 
   test "comp will win in 3 moves if human plays poorly--comp goes first -- second run" do
     game = Game.start_game(false)
-    game = Game.make_move(game, :c7, "x", :x)
-    game = Game.make_move(game, :c9, "x", :x)
+    game = Game.make_move(game, :c7, "X", :x)
+    game = Game.make_move(game, :c9, "X", :x)
     assert game.game_state == :won
-    assert game.winner == "o"
+    assert game.winner == "O"
   end
 end
