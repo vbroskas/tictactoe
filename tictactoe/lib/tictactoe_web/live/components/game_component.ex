@@ -1,6 +1,7 @@
 defmodule TictactoeWeb.GameComponent do
   use TictactoeWeb, :live_component
   alias TictactoeWeb.ToggleCell
+  alias Tictactoe.Game
 
   def mount(socket) do
     game = Game.start_game(true)

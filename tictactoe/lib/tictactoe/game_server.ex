@@ -1,5 +1,6 @@
 defmodule Tictactoe.GameServer do
   use GenServer, restart: :transient
+  alias Tictactoe.Game
 
   def start_link(game_id) do
     GenServer.start_link(__MODULE__, [], name: create_name(game_id))
